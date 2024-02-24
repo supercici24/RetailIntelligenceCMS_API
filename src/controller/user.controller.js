@@ -10,6 +10,14 @@ class UserController {
       data: result
     }
   }
+  async detail(ctx, next) {
+    const { userId } = ctx.params
+    const result = await userService.getUserByID(userId)
+    ctx.body = {
+      code: 200,
+      data: result
+    }
+  }
 }
 
 module.exports = new UserController()
