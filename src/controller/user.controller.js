@@ -1,4 +1,5 @@
 const userService = require('../service/user.service')
+const { splitObj, toString } = require('../utils/transition')
 class UserController {
   async create(ctx, next) {
     const user = ctx.request.body
@@ -16,6 +17,25 @@ class UserController {
     ctx.body = {
       code: 200,
       data: result
+    }
+  }
+  async list(ctx, next) {
+    const info = ctx.request.body
+    const offset = toString(info.offset)
+    const size = toString(info.size)
+    const [like] = splitObj(info, ['offset', 'size'])
+    let hasLimit = false
+    if (offset && size) {
+      hasLimit = true
+    }
+
+    const result = await userService.getUserList(like, hasLimit ? [offset, size] : [])
+    ctx.body = {
+      code: 200,
+      data: {
+        list: result,
+        totalCount: result.length
+      }
     }
   }
 }

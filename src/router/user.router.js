@@ -9,8 +9,9 @@ const userRouter = new KoaRouter({ prefix: '/users' })
 // 用户注册接口
 userRouter.post('/', verifyUser, handlePassword, UserController.create)
 
-// 用户查询
+// 根据id查询查询
 userRouter.get('/:userId', verifyAuth, UserController.detail)
-
+// 查询用户列表
+userRouter.post('/list', verifyAuth, UserController.list)
 // 导出路由
 module.exports = userRouter

@@ -34,6 +34,25 @@ class UserService {
     const [result] = await connection.execute(statement, [userId])
     return result[0]
   }
+  // 查询用户列表
+  async getUserList(like, limit) {
+    const likes = mapSqlStatement.like(like, 'u')
+
+    const sqlLimit = limit.length ? 'limit ?, ?' : ''
+    const sqlLike = likes.length ? `where ${likes.join('')}` : ''
+    const statement = `
+      select 
+        u.id, u.name, u.realname, u.cellphone, u.enable, u.createAt, u.updateAt,
+        d.name departmentName, r.id roleId, r.name roleName
+      from users u
+      left join role r on u.roleId = r.id
+      left join department d on u.departmentId = d.id 
+      ${sqlLike}
+      ${sqlLimit};
+      `
+    const [result] = await connection.execute(statement, limit)
+    return result
+  }
 }
 
 module.exports = new UserService()

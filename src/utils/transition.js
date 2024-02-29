@@ -11,7 +11,11 @@ function splitObj(info, abandonKey) {
 
   return [retain, abandon]
 }
+function toString(value) {
+  return value || value === 0 ? value.toString() : value;
+}
 
 module.exports = {
-  splitObj
+  splitObj,
+  toString
 }
