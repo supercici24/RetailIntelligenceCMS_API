@@ -2,11 +2,10 @@ const connection = require('../app/database')
 const mapSqlStatement = require('../utils/mapSqlStatement')
 class UserService {
   async create(userInfo) {
-    const { insert, placeholder, values } = mapSqlStatement.create(userInfo)
+    const { inserts, placeholders, valuse } = mapSqlStatement.create(userInfo)
+    const statement = `INSERT INTO users (${inserts.join()}) VALUES (${placeholders.join()})`
 
-    const statement = `INSERT INTO users (${insert.join()}) VALUES (${placeholder.join()})`
-
-    const [result] = await connection.execute(statement, values)
+    const [result] = await connection.execute(statement, valuse)
     return result
   }
   // 查询数据库
