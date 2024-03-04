@@ -53,6 +53,13 @@ class UserService {
     const [result] = await connection.execute(statement, limit)
     return result
   }
+  // 根据id删除用户信息
+  async deleteUserByID(userId) {
+    const statement = `delete from users where id = ?;`
+
+    const [result] = await connection.execute(statement, [userId])
+    return result
+  }
 }
 
 module.exports = new UserService()

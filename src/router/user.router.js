@@ -13,5 +13,7 @@ userRouter.post('/', verifyUser, handlePassword, UserController.create)
 userRouter.get('/:userId', verifyAuth, UserController.detail)
 // 查询用户列表
 userRouter.post('/list', verifyAuth, UserController.list)
+// 删除用户数据
+userRouter.delete('/:userId', verifyAuth, UserController.delete)
 // 导出路由
 module.exports = userRouter

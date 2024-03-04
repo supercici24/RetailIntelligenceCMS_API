@@ -24,6 +24,26 @@ class RoleService {
     const [result] = await connection.execute(statement, [id])
     return result[0].menuList
   }
+  async getRoleList(like, limit) {
+    const likes = mapSqlStatement.like(like, 'r')
+    const sqlLike = likes.length ? `where ${likes.join()}` : ''
+    const sqlLimit = limit.length ? `limit ?, ?` : ''
+    const statement = `
+      select 
+      r.id, r.name, r.intro, r.createAt, r.updateAt,
+      JSON_ARRAYAGG(JSON_OBJECT(
+        'id', m.id, 'name', m.name, 'type', m.type, 'icon', m.icon, 'parentId', m.parentId, 'url', m.url, 'sort', m.sort, 'permission', m.permission, 'createAt', m.createAt,'updateAt', m.updateAt
+      )) menuList
+      from role r
+      left join role_menu rm on rm.roleId = r.id
+      left join menu m on m.id = rm.menuId
+      ${sqlLike}
+      group by r.id
+      ${sqlLimit};
+    `
+    const [result] = await connection.execute(statement, limit)
+    return result
+  }
 }
 
 module.exports = new RoleService()

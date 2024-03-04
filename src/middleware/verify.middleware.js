@@ -54,6 +54,7 @@ const verifyAuth = async (ctx, next) => {
     await next()
 
   } catch (error) {
+    console.log("来这了吗：", error)
     ctx.app.emit('error', UNAUTHORIZED, ctx)
   }
 }

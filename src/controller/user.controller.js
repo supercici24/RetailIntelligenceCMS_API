@@ -38,6 +38,16 @@ class UserController {
       }
     }
   }
+  async delete(ctx, next) {
+    const { userId } = ctx.params
+
+    await userService.deleteUserByID(userId)
+
+    ctx.body = {
+      code: 200,
+      data: '删除用户成功'
+    }
+  }
 }
 
 module.exports = new UserController()

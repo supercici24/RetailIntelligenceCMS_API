@@ -1,8 +1,7 @@
 const roleService = require('../service/role.service')
 const roleMenuService = require('../service/roleMenu.service')
-const { splitObj } = require('../utils/transition')
+const { toString, splitObj } = require('../utils/transition')
 const { menuListHandle } = require('../utils/menuHandle')
-
 class roleController {
   async create(ctx, next) {
     const info = ctx.request.body
@@ -28,6 +27,33 @@ class roleController {
     ctx.body = {
       code: 200,
       data: result
+    }
+  }
+  async roleList(ctx, next) {
+    const info = ctx.request.body
+    const offset = toString(info.offset)
+    const size = toString(info.size)
+    const [like] = splitObj(info, ['offset', 'size'])
+
+    let hasLimit = false
+    if (offset && size) {
+      hasLimit = true
+    }
+
+    const roleResult = await roleService.getRoleList(
+      like,
+      hasLimit ? [offset, size] : []
+    )
+    // 处理 menuList
+    for (const role of roleResult) {
+      role.menuList = menuListHandle(role.menuList)
+    }
+    ctx.body = {
+      code: 200,
+      data: {
+        list: roleResult,
+        totalCount: roleResult.length
+      }
     }
   }
 }
