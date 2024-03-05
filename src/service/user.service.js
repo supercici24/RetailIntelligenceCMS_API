@@ -8,6 +8,25 @@ class UserService {
     const [result] = await connection.execute(statement, valuse)
     return result
   }
+  // 根据id删除用户信息
+  async deleteUserByID(userId) {
+    const statement = `delete from users where id = ?;`
+
+    const [result] = await connection.execute(statement, [userId])
+    return result
+  }
+  // 编辑
+  async update(userId, updateInfo) {
+    const { updates, values } = mapSqlStatement.update(updateInfo)
+
+    const statement = `update users set ${updates.join()} where id = ?;`
+
+    const [result] = await connection.execute(statement, [
+      ...values,
+      userId
+    ])
+    return result
+  }
   // 查询数据库
   async findUserByName(name) {
     const statement = 'SELECT * FROM users WHERE name = ?'
@@ -52,11 +71,11 @@ class UserService {
     const [result] = await connection.execute(statement, limit)
     return result
   }
-  // 根据id删除用户信息
-  async deleteUserByID(userId) {
-    const statement = `delete from users where id = ?;`
+  async getUserByAny(key, value) {
+    const statement = `SELECT * FROM users WHERE ${key} = ?;`
 
-    const [result] = await connection.execute(statement, [userId])
+    const [result] = await connection.execute(statement, [value])
+
     return result
   }
 }

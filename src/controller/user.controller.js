@@ -48,6 +48,17 @@ class UserController {
       data: '删除用户成功'
     }
   }
+  async edit(ctx, next) {
+    const { userId } = ctx.params
+    const updateInfo = ctx.request.body
+
+    await userService.update(userId, updateInfo)
+
+    ctx.body = {
+      code: 200,
+      data: '修改成功'
+    }
+  }
 }
 
 module.exports = new UserController()

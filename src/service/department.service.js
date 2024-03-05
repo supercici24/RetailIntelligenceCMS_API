@@ -18,6 +18,13 @@ class departmentService {
 
     return result
   }
+  async getDepartmentByAny(key, value) {
+    const statement = `SELECT * FROM department WHERE ${key} = ?;`
+
+    const [result] = await connection.execute(statement, [value])
+
+    return result
+  }
 }
 
 module.exports = new departmentService()

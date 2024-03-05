@@ -2,14 +2,23 @@ const mapSqlStatement = {
   create(createInfo) {
     const inserts = []
     const placeholders = []
-    const valuse = Object.values(createInfo)
+    const values = Object.values(createInfo)
 
     for (const key in createInfo) {
       inserts.push(key)
       placeholders.push('?')
     }
 
-    return { inserts, placeholders, valuse }
+    return { inserts, placeholders, values }
+  },
+  update(updateInfo) {
+    const updates = []
+    const values = Object.values(updateInfo)
+
+    for (const key in updateInfo) {
+      updates.push(`${key} = ?`)
+    }
+    return { updates, values }
   },
   like(info, tableName) {
     const likes = []

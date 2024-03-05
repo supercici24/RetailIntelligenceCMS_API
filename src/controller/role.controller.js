@@ -12,7 +12,6 @@ class roleController {
     for (const menuId of menuList) {
       await roleMenuService.create(roleResult.insertId, menuId)
     }
-
     ctx.body = {
       code: 0,
       data: `创建${roleInfo.name}成功`

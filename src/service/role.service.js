@@ -4,6 +4,7 @@ const mapSqlStatement = require('../utils/mapSqlStatement')
 class RoleService {
   async create(roleInfo) {
     const { inserts, placeholders, values } = mapSqlStatement.create(roleInfo)
+    console.log("inserts:", inserts, placeholders, values)
     const statement = `INSERT INTO role (${inserts.join()}) VALUES (${placeholders.join()});`
 
     const [result] = await connection.execute(statement, values)
@@ -42,6 +43,13 @@ class RoleService {
       ${sqlLimit};
     `
     const [result] = await connection.execute(statement, limit)
+    return result
+  }
+  async getRoleByAny(key, value) {
+    const statement = `SELECT * FROM role WHERE ${key} = ?;`
+
+    const [result] = await connection.execute(statement, [value])
+
     return result
   }
 }
