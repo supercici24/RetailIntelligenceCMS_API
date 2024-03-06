@@ -2,10 +2,10 @@ const connection = require('../app/database')
 const mapSqlStatement = require('../utils/mapSqlStatement')
 class UserService {
   async create(userInfo) {
-    const { inserts, placeholders, valuse } = mapSqlStatement.create(userInfo)
+    const { inserts, placeholders, values } = mapSqlStatement.create(userInfo)
     const statement = `INSERT INTO users (${inserts.join()}) VALUES (${placeholders.join()})`
 
-    const [result] = await connection.execute(statement, valuse)
+    const [result] = await connection.execute(statement, values)
     return result
   }
   // 根据id删除用户信息
@@ -26,12 +26,6 @@ class UserService {
       userId
     ])
     return result
-  }
-  // 查询数据库
-  async findUserByName(name) {
-    const statement = 'SELECT * FROM users WHERE name = ?'
-    const [valuse] = await connection.execute(statement, [name])
-    return valuse
   }
   // 根据id查询用户信息
   async getUserByID(userId) {

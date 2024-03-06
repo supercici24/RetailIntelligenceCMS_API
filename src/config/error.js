@@ -8,6 +8,7 @@ const NAME_IS_EXISTS = 'name_is_exists'
 const URL_IS_EXISTS = 'url_is_exists'
 const REGEX_MISMATCH = 'regex_mismatch'
 const FORBID_HANDLE = 'forbid_handle'
+const USER_NOT_ENABLE = 'user_not_enabel' //帐号不可用
 
 module.exports = {
   NAME_OR_PASSWORD_IS_REQUIRE,
@@ -19,5 +20,6 @@ module.exports = {
   NAME_IS_EXISTS,
   URL_IS_EXISTS,
   REGEX_MISMATCH,
-  FORBID_HANDLE
+  FORBID_HANDLE,
+  USER_NOT_ENABLE
 }

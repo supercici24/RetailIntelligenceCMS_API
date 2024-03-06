@@ -10,7 +10,6 @@ class LoginController {
       expiresIn: 24 * 60 * 60,
       algorithm: 'RS256' //设置算法为非对称加密算法，默认是对称加密
     })
-
     // 3.返回用户信息
     ctx.body = { code: 0, data: { id, name, token } }
   }

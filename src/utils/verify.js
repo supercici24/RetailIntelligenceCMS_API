@@ -64,7 +64,7 @@ const regexRulesInfo = (rules, infos) => {
   // 初始化结果对象
   const result = {
     isSucceed: true,
-    message: '成功~'
+    message: '成功'
   }
 
   // 验证单条规则项
@@ -94,7 +94,7 @@ const regexRulesInfo = (rules, infos) => {
         if (!verify(ruleItem, value)) {
           // 若验证失败，则更新结果对象并返回
           result.isSucceed = false
-          result.message = ruleItem.message ?? '失败~'
+          result.message = ruleItem.message ?? '失败'
           return result
         }
       }
@@ -103,7 +103,7 @@ const regexRulesInfo = (rules, infos) => {
       if (!verify(rule, value)) {
         // 若验证失败，则更新结果对象并返回
         result.isSucceed = false
-        result.message = rule.message ?? '失败~'
+        result.message = rule.message ?? '失败'
         return result
       }
     }
