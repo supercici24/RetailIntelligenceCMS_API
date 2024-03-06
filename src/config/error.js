@@ -7,6 +7,7 @@ const OPERATION_NOT_ALLOW = 'operation_not_allow' // 操作不允许
 const NAME_IS_EXISTS = 'name_is_exists'
 const URL_IS_EXISTS = 'url_is_exists'
 const REGEX_MISMATCH = 'regex_mismatch'
+const FORBID_HANDLE = 'forbid_handle'
 
 module.exports = {
   NAME_OR_PASSWORD_IS_REQUIRE,
@@ -17,5 +18,6 @@ module.exports = {
   OPERATION_NOT_ALLOW,
   NAME_IS_EXISTS,
   URL_IS_EXISTS,
-  REGEX_MISMATCH
+  REGEX_MISMATCH,
+  FORBID_HANDLE
 }

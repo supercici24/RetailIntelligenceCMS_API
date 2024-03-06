@@ -1,10 +1,11 @@
-const { UNAUTHORIZED, NAME_OR_PASSWORD_IS_REQUIRE, NAME_IS_EXISTS, REGEX_MISMATCH, URL_IS_EXISTS, NAME_IS_NOT_EXISTS, PASSWORD_IS_INCORRECT } = require('../config/error')
+const { UNAUTHORIZED, FORBID_HANDLE, NAME_OR_PASSWORD_IS_REQUIRE, NAME_IS_EXISTS, REGEX_MISMATCH, URL_IS_EXISTS, NAME_IS_NOT_EXISTS, PASSWORD_IS_INCORRECT } = require('../config/error')
 const userService = require('../service/user.service')
 const md5password = require('../utils/md5-password')
 const { PUBLIC_KEY } = require('../config/secret')
 const jwt = require('jsonwebtoken')
 const { regexRulesInfo, hasCUPremise } = require('../utils/verify')
 const { loginRules, createRules, updateRules } = require('./config/rulesConfig')
+const forbidHandleIds = require('./config/forbidConfig')
 
 // 验证登录
 const verifyLogin = async (ctx, next) => {
@@ -102,10 +103,32 @@ const verifyCUInfo = async (ctx, next) => {
 
   await next();
 }
+// 这是一个中间件函数，用于权限验证
+const verifyForbid = async (ctx, next) => {
+  // 从参数中获取第一个键值作为参数的键名
+  const paramsKey = Object.keys(ctx.params)[0];
+  // 尝试将参数的值转换为数字类型作为 id
+  const id = parseFloat(ctx.params[paramsKey]);
+  // 从请求的 URL 路径中提取出表名
+  const tableName = ctx.URL.pathname
+    .replace('/', '')
+    .replace(`/${id}`, '');
+  // 从 forbidHandleIds 中获取对应表名的处理 id
+  const forbidHandleId = forbidHandleIds[tableName];
+  // 如果 forbidHandleId 包含当前 id，则抛出 FORBID_HANDLE 错误并传递给应用程序的错误处理机制
+  if (forbidHandleId.includes(id)) {
+    const error = new Error(FORBID_HANDLE);
+    return ctx.app.emit('error', error, ctx);
+  }
+
+  // 执行下一个中间件函数
+  await next();
+}
 
 
 module.exports = {
   verifyLogin,
   verifyAuth,
-  verifyCUInfo
+  verifyCUInfo,
+  verifyForbid
 }

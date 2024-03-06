@@ -4,11 +4,20 @@ const mapSqlStatement = require('../utils/mapSqlStatement')
 class RoleService {
   async create(roleInfo) {
     const { inserts, placeholders, values } = mapSqlStatement.create(roleInfo)
-    console.log("inserts:", inserts, placeholders, values)
     const statement = `INSERT INTO role (${inserts.join()}) VALUES (${placeholders.join()});`
 
     const [result] = await connection.execute(statement, values)
 
+    return result
+  }
+  async update(roleId, roleInfo) {
+    const { updates, values } = mapSqlStatement.update(roleInfo)
+    const statement = `update role set ${updates.join()} where id = ?;`
+
+    const [result] = await connection.execute(statement, [
+      ...values,
+      roleId
+    ])
     return result
   }
   async getRoleMenuById(id) {
